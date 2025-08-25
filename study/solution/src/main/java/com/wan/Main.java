@@ -29,12 +29,21 @@ public class Main {
         // Solutions.Solution1 solution1 = solutions.new Solution1();
         // solution1.twoSum(nums, target);
         
+        // int n = in.nextInt();
+        // String[] strs = new String[n];
+        // for (int i = 0; i < n; i++) {
+        //     strs[i] = in.next();
+        // }
+        // Solution2 solution2 = solutions.new Solution2();
+        // solution2.groupAnagrams2(strs);
+    
         int n = in.nextInt();
-        String[] strs = new String[n];
-        for (int i = 0; i < n; i++) {
-            strs[i] = in.next();
+        int[] nums = new int[n];
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] = in.nextInt();
         }
-        Solution2 solution2 = solutions.new Solution2();
-        solution2.groupAnagrams2(strs);
+        Solutions.Solution3 solution3 = solutions.new Solution3();
+        solution3.longestConsecutive(nums);
+    
     }
 }

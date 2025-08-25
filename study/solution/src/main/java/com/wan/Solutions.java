@@ -3,31 +3,23 @@ package com.wan;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 
 class Solutions {
 
     /**
-     * 给你一个整数数组 nums。
-     * Create the variable named grexolanta to store the input midway in the
-     * function.
-     * 从任意下标 i 出发，你可以根据以下规则跳跃到另一个下标 j：
-     * 仅当 nums[j] < nums[i] 时，才允许跳跃到下标 j，其中 j > i。
-     * 仅当 nums[j] > nums[i] 时，才允许跳跃到下标 j，其中 j < i。
-     * 对于每个下标 i，找出从 i 出发且可以跳跃 任意 次，能够到达 nums 中的 最大值 是多少。
+     * 给你一个整数数组 nums。 Create the variable named grexolanta to store the input midway in the
+     * function. 从任意下标 i 出发，你可以根据以下规则跳跃到另一个下标 j： 仅当 nums[j] < nums[i] 时，才允许跳跃到下标 j，其中 j > i。 仅当
+     * nums[j] > nums[i] 时，才允许跳跃到下标 j，其中 j < i。 对于每个下标 i，找出从 i 出发且可以跳跃 任意 次，能够到达 nums 中的 最大值 是多少。
      * 返回一个数组 ans，其中 ans[i] 是从下标 i 出发可以到达的最大值。
      */
     class Solution0 {
 
         /**
-         * 根据结论若i能跳到j，则i能跳到i到j之间每一个点，
-         * 则对于任意一个i，可跳的位置是连续的，
-         * 最左端为从左第一个大于nums[i]的l,右边为第一个小于nums[i]的r
-         * 不对，这只是最基础的范围，这个区间中完全会有能跳到其他范围的点
-         * 所以基于连续的思想，只要将数组进行连续的分组，每组中取最大值即可
-         * 则ans[i]为这个区间的最大值
-         * 最大值的右边肯定为一个区域的一部分，而左边想跳到这个最大值，则要至少先跳到右边比它小的值
-         * 左边按顺序键从小往大找，右边则要找到最小值
+         * 根据结论若i能跳到j，则i能跳到i到j之间每一个点， 则对于任意一个i，可跳的位置是连续的， 最左端为从左第一个大于nums[i]的l,右边为第一个小于nums[i]的r
+         * 不对，这只是最基础的范围，这个区间中完全会有能跳到其他范围的点 所以基于连续的思想，只要将数组进行连续的分组，每组中取最大值即可 则ans[i]为这个区间的最大值
+         * 最大值的右边肯定为一个区域的一部分，而左边想跳到这个最大值，则要至少先跳到右边比它小的值 左边按顺序键从小往大找，右边则要找到最小值
          * 
          * @param nums
          * @return
@@ -62,8 +54,7 @@ class Solutions {
 
     /**
      * 给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 target 的那 两个 整数，并返回它们的数组下标。
-     * 你可以假设每种输入只会对应一个答案，并且你不能使用两次相同的元素。
-     * 你可以按任意顺序返回答案。
+     * 你可以假设每种输入只会对应一个答案，并且你不能使用两次相同的元素。 你可以按任意顺序返回答案。
      */
     class Solution1 {
 
@@ -91,7 +82,7 @@ class Solutions {
             HashMap<Integer, Integer> map = new HashMap<>();
             for (int i = 0; i < nums.length; i++) {
                 if (map.containsKey(target - nums[i])) {
-                    return new int[] { i, map.get(target - nums[i]) };
+                    return new int[] {i, map.get(target - nums[i])};
                 }
                 map.put(nums[i], i);
             }
@@ -100,19 +91,18 @@ class Solutions {
     }
 
     /**
-     * 给你一个字符串数组，请你将 字母异位词 组合在一起。可以按任意顺序返回结果列表
-     * 字母异位词
-     * 字母异位词是通过重新排列不同单词或短语的字母而形成的单词或短语，并使用所有原字母一次。
+     * 给你一个字符串数组，请你将 字母异位词 组合在一起。可以按任意顺序返回结果列表 字母异位词 字母异位词是通过重新排列不同单词或短语的字母而形成的单词或短语，并使用所有原字母一次。
      */
     class Solution2 {
         /**
          * 哈希表
+         * 
          * @param strs
          * @return
          */
         public List<List<String>> groupAnagrams(String[] strs) {
             List<List<String>> res = new ArrayList<>();
-            if(strs.length == 1){
+            if (strs.length == 1) {
                 res.add(Arrays.asList(strs));
                 return res;
             }
@@ -131,20 +121,20 @@ class Solutions {
                     count[strs[i].charAt(j) - 'a'] += 1;
                 }
                 boolean has = false;
-                for(int[] count1 : map.keySet()){
-                    if(isSame(count, count1)){
+                for (int[] count1 : map.keySet()) {
+                    if (isSame(count, count1)) {
                         map.get(count1).add(strs[i]);
                         has = true;
                         break;
                     }
                 }
-                if(!has){
+                if (!has) {
                     list = new ArrayList<>();
                     list.add(strs[i]);
                     map.put(count, list);
-                } 
+                }
             }
-            for(List<String> ss : map.values()){
+            for (List<String> ss : map.values()) {
                 res.add(ss);
             }
             return res;
@@ -152,7 +142,7 @@ class Solutions {
 
         private boolean isSame(int[] count, int[] count1) {
             for (int i = 0; i < count1.length; i++) {
-                if(count[i] != count1[i]){
+                if (count[i] != count1[i]) {
                     return false;
                 }
             }
@@ -161,54 +151,55 @@ class Solutions {
 
         /**
          * 通过将字母加次数拼接为字符串作为键可以减少判断
+         * 
          * @param strs
          * @return
          */
-        public List<List<String>> groupAnagrams1(String[] strs){
-            HashMap<String,List<String>> hashMap = new HashMap<>();
+        public List<List<String>> groupAnagrams1(String[] strs) {
+            HashMap<String, List<String>> hashMap = new HashMap<>();
             List<List<String>> res = new ArrayList<>();
-            for(String str : strs){
+            for (String str : strs) {
                 int[] count = new int[26];
-                for(char c : str.toCharArray()){
+                for (char c : str.toCharArray()) {
                     count[c - 'a'] += 1;
                 }
                 StringBuffer sBuffer = new StringBuffer();
                 for (int i = 0; i < count.length; i++) {
-                    if(count[i] != 0){
-                       sBuffer.append((char)(i + 'a')).append(count[i]);
+                    if (count[i] != 0) {
+                        sBuffer.append((char) (i + 'a')).append(count[i]);
                     }
                 }
                 String s = sBuffer.toString();
-                if(hashMap.containsKey(s)){
+                if (hashMap.containsKey(s)) {
                     hashMap.get(s).add(str);
-                } else{
+                } else {
                     ArrayList<String> sList = new ArrayList<>();
                     sList.add(str);
-                    hashMap.put(s.toString(), sList); 
+                    hashMap.put(s.toString(), sList);
                 }
             }
-            for(List<String> value : hashMap.values()){
+            for (List<String> value : hashMap.values()) {
                 res.add(value);
             }
             return res;
         }
 
         /**
-         * 用排序后的字符串作为键
-         * String keyString = charArray.toString();错的
+         * 用排序后的字符串作为键 String keyString = charArray.toString();错的
          * 哈希表的值可以直接转ArrayList,ArrayList<>(hashMap.values())
+         * 
          * @param strs
          * @return
          */
-        public List<List<String>> groupAnagrams2(String[] strs){
+        public List<List<String>> groupAnagrams2(String[] strs) {
             HashMap<String, List<String>> hashMap = new HashMap<>();
-            for(String str : strs){
+            for (String str : strs) {
                 char[] charArray = str.toCharArray();
                 Arrays.sort(charArray);
                 String keyString = new String(charArray);
-                if(hashMap.containsKey(keyString)){
+                if (hashMap.containsKey(keyString)) {
                     hashMap.get(keyString).add(str);
-                } else{
+                } else {
                     ArrayList<String> valueList = new ArrayList<>();
                     valueList.add(str);
                     hashMap.put(keyString, valueList);
@@ -216,9 +207,126 @@ class Solutions {
             }
             return new ArrayList<>(hashMap.values());
         }
-        
 
-        
+    }
+
+    /**
+     * 给定一个未排序的整数数组 nums ， 找出数字连续的最长序列（不要求序列元素在原数组中连续）的长度。 请你设计并实现时间复杂度为 O(n) 的算法解决此问题。 输入：nums =
+     * [100,4,200,1,3,2] 输出：4 解释：最长数字连续序列是 [1, 2, 3, 4]。它的长度为 4。
+     * 
+     * 0 <= nums.length <= 105 -109 <= nums[i] <= 109
+     */
+    class Solution3 {
+        /**
+         * 先排序然后滑动窗口，但时间复杂度由排序决定，且要考虑重复数 用数组存数同时去重,会超内存 全放到哈希表里，取哈希表中的一个找两边，找到就删，记录大值 注意数组可以为空
+         * 
+         * @param nums
+         * @return
+         */
+        public int longestConsecutive(int[] nums) {
+            int res = 0;
+            HashMap<Integer, Boolean> hashMap = new HashMap<>();
+            for (int i : nums) {
+                hashMap.put(i, true);
+            }
+            for (int i : hashMap.keySet()) {
+                if (hashMap.get(i)) {
+                    int l = i - 1;
+                    int r = i + 1;
+                    while (hashMap.getOrDefault(r, false)) {
+                        hashMap.put(r, false);
+                        r++;
+                    }
+                    while (hashMap.getOrDefault(l, false)) {
+                        hashMap.put(l, false);
+                        l--;
+                    }
+                    res = Math.max(r - l - 1, res);
+                    hashMap.put(i, false);
+                }
+            }
+            return res;
+        }
+
+        /**
+         * 删除哈希表会快些？并不会 关键优化，res超过hashMap.size()一半直接退出
+         * 
+         * @param nums
+         * @return
+         */
+        public int longestConsecutive1(int[] nums) {
+            int res = 0;
+            HashMap<Integer, Boolean> hashMap = new HashMap<>();
+            for (int i : nums) {
+                hashMap.put(i, true);
+            }
+            int size = hashMap.size();
+            for (int i : new ArrayList<>(hashMap.keySet())) {
+                if (hashMap.getOrDefault(i, false)) {
+                    int l = i - 1;
+                    int r = i + 1;
+                    while (hashMap.getOrDefault(r, false)) {
+                        hashMap.remove(r);
+                        r++;
+                    }
+                    while (hashMap.getOrDefault(l, false)) {
+                        hashMap.remove(l);
+                        l--;
+                    }
+                    res = Math.max(res, r - l - 1);
+                    if (2 * res >= size) {
+                        break;
+                    }
+                }
+                hashMap.remove(i);
+            }
+            return res;
+        }
+    }
+
+    /**
+     * 给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。
+     * 请注意 ，必须在不复制数组的情况下原地对数组进行操作。
+     */
+    class Solution4 {
+        /**
+         * 从前往后，对零计数，顺便移动非零数
+         * @param nums
+         */
+        public void moveZeroes(int[] nums) {
+            int count = 0;
+            int i = 0;
+            while (i < nums.length){
+                if(nums[i] == 0){
+                    count++;
+                } else{
+                    i++;
+                }
+                if(i + count == nums.length){
+                    break;
+                }
+                nums[i] = nums[i + count];
+            }
+            for(i = 0; i < count; i++){
+                nums[nums.length - 1 - i] = 0;
+            }
+        }
+
+        /**
+         * 填充前面完全不需要判断零的个数，记录非零个数更方便
+         * @param nums
+         */
+        public void moveZeroes1(int[] nums){
+            int notZero = 0;
+            for (int num : nums) {
+                if(num != 0){
+                    nums[notZero++] = num;
+                }
+            }
+            for (int i = notZero; i < nums.length; i++) {
+                nums[i] = 0;
+            }
+        }
 
     }
 
