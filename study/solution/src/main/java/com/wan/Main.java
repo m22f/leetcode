@@ -56,12 +56,18 @@ public class Main {
         // Solutions.Solution6 solution6 = solutions.new Solution6();
         // solution6.threeSum(nums);
 
-        int n = in.nextInt();
-        int[] height = new int[n];
-        for (int i = 0; i < height.length; i++) {
-            height[i] = in.nextInt();
-        }
-        Solutions.Solution7 solution7 = solutions.new Solution7();
-        solution7.trap(height);
+        // int n = in.nextInt();
+        // int[] height = new int[n];
+        // for (int i = 0; i < height.length; i++) {
+        //     height[i] = in.nextInt();
+        // }
+        // Solutions.Solution7 solution7 = solutions.new Solution7();
+        // solution7.trap1(height);
+
+        String s = in.next();
+        String p = in.next();
+        Solutions.Solution8 solution8 = solutions.new Solution8();
+        solution8.findAnagrams(s, p);
+
     }
 }

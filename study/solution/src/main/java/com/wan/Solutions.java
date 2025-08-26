@@ -427,13 +427,9 @@ class Solutions {
      */
     class Solution7 {
         /**
-         * 当先递减然后递增，为一个凹陷
-         * 对于每个凹陷，用两端的值的小值减去当中的每一个的值之和为雨水数
-         * 每次r停留的位置，为下一次l的起始点
-         * r找法，第一个比l大，且相距大于1,不全对，r是可以小于l的，此时为l往后的最大值
-         * 存在多个最大值时以右边的计算
-         * 单独写个total方法计算凹陷里的水量
-         * 不如递归
+         * 当先递减然后递增，为一个凹陷 对于每个凹陷，用两端的值的小值减去当中的每一个的值之和为雨水数 每次r停留的位置，为下一次l的起始点
+         * r找法，第一个比l大，且相距大于1,不全对，r是可以小于l的，此时为l往后的最大值 存在多个最大值时以右边的计算 单独写个total方法计算凹陷里的水量 不如递归
+         * 
          * @param height
          * @return
          */
@@ -450,27 +446,132 @@ class Solutions {
             }
             return total(height, l, r);
         }
-        
+
 
         private int total(int[] height, int l, int r) {
-            if(r - l < 2){
+            if (r - l < 2) {
                 return 0;
             }
             int min = Math.min(height[l], height[r]);
             int maxIndex = l + 1;
-            for(int i = l + 1; i < r; i++){
-                if(height[maxIndex] < height[i]){
+            for (int i = l + 1; i < r; i++) {
+                if (height[maxIndex] < height[i]) {
                     maxIndex = i;
                 }
             }
-            if(height[maxIndex] > min){
+            if (height[maxIndex] > min) {
                 return total(height, l, maxIndex) + total(height, maxIndex, r);
             }
             int total = 0;
-            for(int i = l + 1; i < r; i++){
+            for (int i = l + 1; i < r; i++) {
                 total += height[i];
             }
             return min * (r - l - 1) - total;
+        }
+
+        /**
+         * 双指针，左右开弓0 1 0 2 1 0 1 3 2 1 2 1
+         * 
+         * @param height
+         * @return
+         */
+        public int trap1(int[] height) {
+            int n = height.length;
+            int l = 0;
+            int r = n - 1;
+            int ans = 0;
+            while (l < r) {
+                int nextL = l + 1;
+                // 过滤非递减序列
+                while (nextL <= r && height[l] <= height[nextL]) {
+                    nextL++;
+                    l++;
+                }
+                // 找第一个大于或等于l的nextL
+                while (nextL <= r && height[l] > height[nextL]) {
+                    nextL++;
+                }
+                // 计算
+                if (nextL <= r) {
+                    ans += total1(height, l, nextL);
+                    l = nextL;
+                }
+                int nextR = r - 1;
+                // 过滤非递增序列，从左往右算
+                while (nextR >= l && height[nextR] >= height[r]) {
+                    nextR--;
+                    r--;
+                }
+                // 找右边第一个大于或等于r的nextR
+                while (nextR >= l && height[nextR] < height[r]) {
+                    nextR--;
+                }
+                if (nextR >= l) {
+                    ans += total1(height, nextR, r);
+                    r = nextR;
+                }
+            }
+            return ans;
+        }
+
+
+        private int total1(int[] height, int l, int r) {
+            int total = 0;
+            for (int i = l + 1; i < r; i++) {
+                total += height[i];
+            }
+            return Math.min(height[l], height[r]) * (r - l - 1) - total;
+        }
+
+
+    }
+
+    /**
+     * 给定两个字符串 s 和 p，找到 s 中所有 p 的 异位词 的子串，返回这些子串的起始索引。不考虑答案输出的顺序。 字母异位词
+     * 字母异位词是通过重新排列不同单词或短语的字母而形成的单词或短语，并使用所有原字母一次。
+     */
+    class Solution8 {
+        /**
+         * 滑动窗口
+         * 
+         * @param s
+         * @param p
+         * @return
+         */
+        public List<Integer> findAnagrams(String s, String p) {
+            int sL = s.length();
+            int pL = p.length();
+            List<Integer> ans = new ArrayList<>();
+            // 用哈希表存p,不能用哈希，
+            HashMap<Character, Boolean> map = new HashMap<>();
+            for (Character c : p.toCharArray()) {
+                map.put(c, true);
+            }
+            int l = 0;
+            int r = pL - 1;
+            for (int i = 0; i < pL; i++) {
+                char c = s.charAt(i);
+                if (map.containsKey(c)) {
+                    map.put(s.charAt(i), false);
+                }
+            }
+            if (!map.containsValue(true)) {
+                ans.add(l);
+            }
+            for (int i = 1; i < sL - r; i++) {
+                char rc = s.charAt(r + i);
+                if (map.containsKey(rc)) {
+                    map.put(rc, false);
+                }
+                char lc = s.charAt(l + i);
+                if (map.containsKey(lc)) {
+                    map.put(lc, true);
+                }
+                if (!map.containsValue(true)) {
+                ans.add(i);
+            }
+            }
+            return ans;
         }
     }
 
