@@ -19,7 +19,6 @@ public class Main {
         // }
         // Solution0 s = solutions.new Solution0();
         // s.maxValue(nums);
-
         // int n = in.nextInt();
         // int[] nums = new int[n];
         // for (int i = 0; i < nums.length; i++) {
@@ -28,7 +27,6 @@ public class Main {
         // int target = in.nextInt();
         // Solutions.Solution1 solution1 = solutions.new Solution1();
         // solution1.twoSum(nums, target);
-        
         // int n = in.nextInt();
         // String[] strs = new String[n];
         // for (int i = 0; i < n; i++) {
@@ -36,14 +34,34 @@ public class Main {
         // }
         // Solution2 solution2 = solutions.new Solution2();
         // solution2.groupAnagrams2(strs);
-    
+        // int n = in.nextInt();
+        // int[] nums = new int[n];
+        // for (int i = 0; i < nums.length; i++) {
+        //     nums[i] = in.nextInt();
+        // }
+        // Solutions.Solution3 solution3 = solutions.new Solution3();
+        // solution3.longestConsecutive(nums);
+        // int n = in.nextInt();
+        // int[] height = new int[n];
+        // for (int i = 0; i < height.length; i++) {
+        //     height[i] = in.nextInt();
+        // }
+        // Solutions.Solution5 solution5 = solutions.new Solution5();
+        // solution5.maxArea(height);
+        // int n = in.nextInt();
+        // int[] nums = new int[n];
+        // for (int i = 0; i < nums.length; i++) {
+        //     nums[i] = in.nextInt();
+        // }
+        // Solutions.Solution6 solution6 = solutions.new Solution6();
+        // solution6.threeSum(nums);
+
         int n = in.nextInt();
-        int[] nums = new int[n];
-        for (int i = 0; i < nums.length; i++) {
-            nums[i] = in.nextInt();
+        int[] height = new int[n];
+        for (int i = 0; i < height.length; i++) {
+            height[i] = in.nextInt();
         }
-        Solutions.Solution3 solution3 = solutions.new Solution3();
-        solution3.longestConsecutive(nums);
-    
+        Solutions.Solution7 solution7 = solutions.new Solution7();
+        solution7.trap(height);
     }
 }
