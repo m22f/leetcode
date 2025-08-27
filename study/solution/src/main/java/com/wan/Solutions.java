@@ -682,48 +682,111 @@ class Solutions {
      */
     class Solution11 {
         /**
-         * 只可以看到？对窗口内依次枚举？超时 维护一个有序链表,维护成本太高
+         * 只可以看到？对窗口内依次枚举？超时 维护一个有序链表,维护成本太高，并不高
          * 
          * @param nums
          * @param k
          * @return
          */
         public int[] maxSlidingWindow(int[] nums, int k) {
-            int l = 0;
-            int[] ans = new int[nums.length - k + 1];
-            int maxIndex = 0;
-            // 以左侧下标为准
-            for (int i = 0; i < k; i++) {
-                if (nums[maxIndex] < nums[i]) {
-                    maxIndex = i;
+            int n = nums.length;
+            // 用链表当双端队列，单调队列
+            LinkedList<Integer> list = new LinkedList<>();
+            int[] ans = new int[n - k + 1];
+            for (int i = 0; i < n; i++) {
+                // 入 只记录递减
+                if (list.isEmpty() || nums[list.getLast()] > nums[i]) {
+                    list.add(i);
+                } else {
+                    // 如果出现比最小值大的，弹出这些值，将该值添加
+                    while (!list.isEmpty() && nums[list.getLast()] <= nums[i]) {
+                        list.removeLast();
+                    }
+                    list.add(i);
+                }
+                // 出
+                // 如果最大值下标出了窗口，删除
+                if (i >= k && list.getFirst() <= i - k) {
+                    list.removeFirst();
+                }
+                // 结果
+                if (i >= k - 1) {
+                    ans[i - k + 1] = nums[list.getFirst()];
                 }
             }
-            ans[l++] = nums[maxIndex];
-            int r = k;
-            while (r < nums.length) {
-                while (l <= maxIndex) {
-                    if (r < nums.length) {
-                        if (nums[r] >= nums[maxIndex]) {
-                            maxIndex = r;
-                        }
-                        r++;
-                        ans[l++] = nums[maxIndex];
-                    }
-                    if (r == nums.length) {
-                        return ans;
+            return ans;
+        }
+
+        /**
+         * 优化版，主要for循环
+         * 
+         * @param nums
+         * @param k
+         * @return
+         */
+        public int[] maxSlidingWindow1(int[] nums, int k) {
+            int n = nums.length;
+            LinkedList<Integer> list = new LinkedList<>();
+            int[] ans = new int[n - k + 1];
+            // 维持列表从首到尾的递减
+            for (int i = 0; i < n; i++) {
+                // 入，若下一个值大于或等于尾部，删除尾部小于或等于的部分
+                while (!list.isEmpty() && nums[list.getLast()] < nums[i]) {
+                    list.removeLast();
+                }
+                list.add(i);
+
+                // 出，若首部出界，删除
+                if (i >= k && list.getFirst() <= i - k) {
+                    list.removeFirst();
+                }
+
+                // 记录结果
+                if (i >= k - 1)
+                    ans[i - k + 1] = nums[list.getFirst()];
+            }
+            return ans;
+        }
+
+        /**
+         * 同题型1438. 绝对差不超过限制的最长连续子数组
+         * 给你一个整数数组 nums ，和一个表示限制的整数 limit，
+         * 请你返回最长连续子数组的长度，该子数组中的任意两个元素之间的绝对差必须小于或者等于 limit。
+         * @param nums
+         * @param limit
+         * @return
+         */
+        public int longestSubarray(int[] nums, int limit) {
+            int ans = 0;
+            int l = 0;
+            // 单调队列存当前和最小值
+            LinkedList<Integer> down = new LinkedList<>();
+            LinkedList<Integer> up = new LinkedList<>();
+            for(int i = 0; i < nums.length; i++){
+                // 入
+                while(!down.isEmpty() && nums[down.getLast()] < nums[i]){
+                    down.removeLast();
+                    l++;
+                }
+                down.add(i);
+                while (!up.isEmpty() && nums[up.getLast()] >= nums[i]) {
+                    up.removeLast();
+                }
+                up.add(i);
+
+                // 出
+                if(nums[down.getFirst()] - nums[up.getFirst()] > limit){
+                    if(down.getFirst() < up.getFirst()){
+                        down.removeFirst();
+                        l++;
+                    }else{
+                        up.removeFirst();
                     }
                 }
-                if (r == nums.length) {
-                    return ans;
+                // 记录
+                if(nums[down.getFirst()] - nums[up.getFirst()] <= limit){
+                    ans = Math.max(ans, i - l + 1);
                 }
-                maxIndex = l;
-                for (int i = l; i < l + k; i++) {
-                    if (nums[maxIndex] < nums[i]) {
-                        maxIndex = i;
-                    }
-                }
-                ans[l++] = nums[maxIndex];
-                r = l + k - 1;
             }
             return ans;
         }

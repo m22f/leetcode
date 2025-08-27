@@ -89,7 +89,7 @@ public class Main {
         }
         int k = in.nextInt();
         Solutions.Solution11 solution11 = solutions.new Solution11();
-        solution11.maxSlidingWindow(nums, k);
+        solution11.longestSubarray(nums, k);
         
 
     }
