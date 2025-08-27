@@ -530,8 +530,33 @@ class Solutions {
      * 给定一个字符串 s ，请你找出其中不含有重复字符的 最长 子串 的长度。 子字符串 是字符串中连续的 非空 字符序列。
      */
     class Solution8 {
+        /**
+         * 哈希表或数组存窗口内的情况，最后返回表长或者数组内非零数 s 由英文字母、数字、符号和空格组成 s可能为空字符串 所以只能用哈希表
+         * 
+         * @param s
+         * @return
+         */
         public int lengthOfLongestSubstring(String s) {
-            return 0;
+            int l = 0;
+            int r = 0;
+            int ans = 0;
+            int n = s.length();
+            HashMap<Character, Integer> map = new HashMap<>();
+            while (r < n) {
+                while (r < n && !map.containsKey(s.charAt(r))) {
+                    map.put(s.charAt(r), r);
+                    r++;
+                }
+                ans = Math.max(ans, r - l);
+                if (r < n) {
+                    int nextL = map.get(s.charAt(r)) + 1;
+                    for (int i = l; i < nextL; i++) {
+                        map.remove(s.charAt(i));
+                    }
+                    l = nextL;
+                }
+            }
+            return ans;
         }
     }
 
@@ -592,5 +617,118 @@ class Solutions {
             return ans;
         }
     }
+
+    /**
+     * 给你一个整数数组 nums 和一个整数 k ，请你统计并返回 该数组中和为 k 的子数组的个数 。 子数组是数组中元素的连续非空序列。 1 <= nums.length <= 2 *
+     * 104 -1000 <= nums[i] <= 1000 -107 <= k <= 107
+     */
+    class Solution10 {
+        /**
+         * 好像能用数位dp？连续数列没必要 有负数滑动窗口不行，且要求连续,排序不行 求个前缀和，然后其他都可以表示为减法
+         * 
+         * @param nums
+         * @param k
+         * @return
+         */
+        public int subarraySum(int[] nums, int k) {
+            int n = nums.length;
+            int[] sum = new int[n + 1];
+            int ans = 0;
+            // 枚举零开头的子数组，并存前缀和
+            for (int i = 0; i < n; i++) {
+                sum[i + 1] = nums[i] + sum[i];
+                if (sum[i + 1] == k) {
+                    ans++;
+                }
+            }
+            for (int i = 1; i < n; i++) {
+                for (int j = i; j < n; j++) {
+                    if (sum[j + 1] - sum[i] == k) {
+                        ans++;
+                    }
+                }
+            }
+            return ans;
+        }
+
+        /**
+         * 通过哈希表将on2优化为on
+         * 
+         * @param nums
+         * @param k
+         * @return
+         */
+        public int subarraySum1(int[] nums, int k) {
+            int[] sums = new int[nums.length + 1];
+            int ans = 0;
+            for (int i = 0; i < nums.length; i++) {
+                sums[i + 1] = nums[i] + sums[i];
+            }
+            // 目标是找sums[i] - sums[j] = k;其中i>j
+            HashMap<Integer, Integer> map = new HashMap<>();
+            map.put(sums[0], 1);
+            for (int i = 0; i < nums.length; i++) {
+                ans += map.getOrDefault(sums[i + 1] - k, 0);
+                map.put(sums[i + 1], map.getOrDefault(sums[i + 1], 0) + 1);
+            }
+            return ans;
+        }
+
+    }
+
+    /**
+     * 给你一个整数数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。 你只可以看到在滑动窗口内的 k 个数字。 滑动窗口每次只向右移动一位。 返回
+     * 滑动窗口中的最大值。 1 <= nums.length <= 105 -104 <= nums[i] <= 104 1 <= k <= nums.length
+     */
+    class Solution11 {
+        /**
+         * 只可以看到？对窗口内依次枚举？超时 维护一个有序链表,维护成本太高
+         * 
+         * @param nums
+         * @param k
+         * @return
+         */
+        public int[] maxSlidingWindow(int[] nums, int k) {
+            int l = 0;
+            int[] ans = new int[nums.length - k + 1];
+            int maxIndex = 0;
+            // 以左侧下标为准
+            for (int i = 0; i < k; i++) {
+                if (nums[maxIndex] < nums[i]) {
+                    maxIndex = i;
+                }
+            }
+            ans[l++] = nums[maxIndex];
+            int r = k;
+            while (r < nums.length) {
+                while (l <= maxIndex) {
+                    if (r < nums.length) {
+                        if (nums[r] >= nums[maxIndex]) {
+                            maxIndex = r;
+                        }
+                        r++;
+                        ans[l++] = nums[maxIndex];
+                    }
+                    if (r == nums.length) {
+                        return ans;
+                    }
+                }
+                if (r == nums.length) {
+                    return ans;
+                }
+                maxIndex = l;
+                for (int i = l; i < l + k; i++) {
+                    if (nums[maxIndex] < nums[i]) {
+                        maxIndex = i;
+                    }
+                }
+                ans[l++] = nums[maxIndex];
+                r = l + k - 1;
+            }
+            return ans;
+        }
+    }
+
+
 
 }

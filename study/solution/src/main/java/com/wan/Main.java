@@ -64,10 +64,33 @@ public class Main {
         // Solutions.Solution7 solution7 = solutions.new Solution7();
         // solution7.trap1(height);
 
-        String s = in.next();
-        String p = in.next();
-        Solutions.Solution9 solution9 = solutions.new Solution9();
-        solution9.findAnagrams(s, p);
+        // String s = in.next();
+        // Solutions.Solution8 solution8 = solutions.new Solution8();
+        // solution8.lengthOfLongestSubstring(s);
+
+        // String s = in.next();
+        // String p = in.next();
+        // Solutions.Solution9 solution9 = solutions.new Solution9();
+        // solution9.findAnagrams(s, p);
+
+        // int n = in.nextInt();
+        // int[] nums = new int[n];
+        // for (int i = 0; i < nums.length; i++) {
+        //     nums[i] = in.nextInt();
+        // }
+        // int k = in.nextInt();
+        // Solutions.Solution10 solution10 = solutions.new Solution10();
+        // solution10.subarraySum1(nums, k);
+
+        int n = in.nextInt();
+        int[] nums = new int[n];
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] = in.nextInt();
+        }
+        int k = in.nextInt();
+        Solutions.Solution11 solution11 = solutions.new Solution11();
+        solution11.maxSlidingWindow(nums, k);
+        
 
     }
 }
