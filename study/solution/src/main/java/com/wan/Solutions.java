@@ -527,12 +527,21 @@ class Solutions {
     }
 
     /**
-     * 给定两个字符串 s 和 p，找到 s 中所有 p 的 异位词 的子串，返回这些子串的起始索引。不考虑答案输出的顺序。 字母异位词
-     * 字母异位词是通过重新排列不同单词或短语的字母而形成的单词或短语，并使用所有原字母一次。
+     * 给定一个字符串 s ，请你找出其中不含有重复字符的 最长 子串 的长度。 子字符串 是字符串中连续的 非空 字符序列。
      */
     class Solution8 {
+        public int lengthOfLongestSubstring(String s) {
+            return 0;
+        }
+    }
+
+    /**
+     * 给定两个字符串 s 和 p，找到 s 中所有 p 的 异位词 的子串，返回这些子串的起始索引。不考虑答案输出的顺序。 字母异位词
+     * 字母异位词是通过重新排列不同单词或短语的字母而形成的单词或短语，并使用所有原字母一次。 1 <= s.length, p.length <= 3 * 104 s 和 p 仅包含小写字母
+     */
+    class Solution9 {
         /**
-         * 滑动窗口
+         * 滑动窗口 存在p比s长的情况
          * 
          * @param s
          * @param p
@@ -542,34 +551,43 @@ class Solutions {
             int sL = s.length();
             int pL = p.length();
             List<Integer> ans = new ArrayList<>();
-            // 用哈希表存p,不能用哈希，
-            HashMap<Character, Boolean> map = new HashMap<>();
-            for (Character c : p.toCharArray()) {
-                map.put(c, true);
+            if (pL > sL) {
+                return ans;
             }
+            // 用数组pArray 存p中26个字母出现个数
+            int[] pArray = new int[26];
+            for (Character c : p.toCharArray()) {
+                pArray[c - 'a'] += 1;
+            }
+            // 起始条件，其中r包含
             int l = 0;
             int r = pL - 1;
+            // 用数组sArray 存s中前qL子串26个字母出现个数
+            int[] sArray = new int[26];
             for (int i = 0; i < pL; i++) {
-                char c = s.charAt(i);
-                if (map.containsKey(c)) {
-                    map.put(s.charAt(i), false);
-                }
+                sArray[s.charAt(i) - 'a'] += 1;
             }
-            if (!map.containsValue(true)) {
-                ans.add(l);
-            }
-            for (int i = 1; i < sL - r; i++) {
-                char rc = s.charAt(r + i);
-                if (map.containsKey(rc)) {
-                    map.put(rc, false);
+            while (r < sL) {
+                // 找p数组不为零的值比s数组多的值
+                int move = 0;
+                for (int i = 0; i < 26; i++) {
+                    if (pArray[i] != 0 && pArray[i] > sArray[i]) {
+                        move += pArray[i] - sArray[i];
+                    }
                 }
-                char lc = s.charAt(l + i);
-                if (map.containsKey(lc)) {
-                    map.put(lc, true);
+                if (move == 0) {
+                    ans.add(l);
+                    move = 1;
                 }
-                if (!map.containsValue(true)) {
-                ans.add(i);
-            }
+                if (r + move >= sL) {
+                    break;
+                }
+                for (int i = 0; i < move; i++) {
+                    sArray[s.charAt(l + i) - 'a'] -= 1;
+                    sArray[s.charAt(r + i + 1) - 'a'] += 1;
+                }
+                r += move;
+                l += move;
             }
             return ans;
         }

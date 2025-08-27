@@ -66,8 +66,8 @@ public class Main {
 
         String s = in.next();
         String p = in.next();
-        Solutions.Solution8 solution8 = solutions.new Solution8();
-        solution8.findAnagrams(s, p);
+        Solutions.Solution9 solution9 = solutions.new Solution9();
+        solution9.findAnagrams(s, p);
 
     }
 }
