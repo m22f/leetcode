@@ -905,8 +905,8 @@ class Solutions {
      */
     class Solution12 {
         /**
-         * l++的位置出错
-         * 存在不满足的情况，结尾要判断
+         * l++的位置出错 存在不满足的情况，结尾要判断
+         * 
          * @param s
          * @param t
          * @return
@@ -943,12 +943,12 @@ class Solutions {
                     if (i - l < ans[1] - ans[0]) {
                         ans[0] = l;
                         ans[1] = i;
-                        
+
                     }
                     if (ans[1] - ans[0] + 1 == tL) {
                         return s.substring(ans[0], ans[1] + 1);
                     }
-                    
+
                     c = s.charAt(l);
                     if (mapT.containsKey(c)) {
                         mapS.put(c, mapS.getOrDefault(c, 0) - 1);
@@ -959,13 +959,130 @@ class Solutions {
                     l++;
                 }
             }
-            if(ans[1] > sL){
+            if (ans[1] > sL) {
                 return "";
             }
             return s.substring(ans[0], ans[1] + 1);
         }
     }
 
-    
+    /**
+     * 动态规划题目
+     */
+    class SolutionDP {
+        /**
+         * 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。 每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？ 1 <= n <= 45
+         * 
+         * @param n
+         * @return
+         */
+        public int climbStairs(int n) {
+            /**
+             * // 爬到 数 // 1 1 // 2 2 // 3 1 + 2 // n f(n-1) + f(n-2)
+             */
+            int[] nums = new int[45];
+            nums[0] = 1;
+            return climbStairsDFS(n, nums);
+        }
+
+        private int climbStairsDFS(int n, int[] nums) {
+            if (n == 1) {
+                nums[n] = 1;
+                return 1;
+            } else {
+                if (nums[n - 1] == 0) {
+                    nums[n - 1] = climbStairsDFS(n - 1, nums);
+                }
+                if (nums[n - 2] == 0) {
+                    nums[n - 2] = climbStairsDFS(n - 2, nums);
+                }
+                return nums[n - 1] + nums[n - 2];
+            }
+        }
+
+        /**
+         * 给定一个非负整数 numRows，生成「杨辉三角」的前 numRows 行。 在「杨辉三角」中，每个数是它左上方和右上方的数的和。 1 <= numRows <= 30 1 1
+         * 1 1 2 1
+         * 
+         * @param numRows
+         * @return
+         */
+        public List<List<Integer>> generate(int numRows) {
+            List<List<Integer>> ans = new ArrayList<>();
+            ans.add(List.of(1));
+            return generateDFS(numRows, ans);
+        }
+
+        private List<List<Integer>> generateDFS(int numRows, List<List<Integer>> ans) {
+            if (numRows == 1) {
+                return ans;
+            } else {
+                List<Integer> list = generateDFS(numRows - 1, ans).get(numRows - 2);
+                ArrayList<Integer> newList = new ArrayList<>();
+                for (int i = 0; i < numRows; i++) {
+                    if (i == 0 || i == numRows - 1) {
+                        newList.add(1);
+                    } else {
+                        newList.add(list.get(i - 1) + list.get(i));
+                    }
+                }
+                ans.add(newList);
+                return ans;
+            }
+        }
+
+        /**
+         * 你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金， 影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，
+         * 如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。 给定一个代表每个房屋存放金额的非负整数数组，计算你 不触动警报装置的情况下 ， 一夜之内能够偷窃到的最高金额。 1 <=
+         * nums.length <= 100 0 <= nums[i] <= 400
+         * 
+         * @param nums
+         * @return
+         */
+        public int rob(int[] nums) {
+            // 因为有方法返回值为零的情况，所以要初始化为-1
+            int[] memory = new int[nums.length + 1];
+            // 有简洁方法,不过源代码好像没区别？jvm层面的汇编代码替换优化？
+            Arrays.fill(memory, -1);
+            for (int i = 0; i < memory.length; i++) {
+                memory[i] = -1;
+            }
+            memory[0] = 0;
+            memory[1] = nums[0];
+            return robDFS(nums, nums.length, memory);
+        }
+
+        private int robDFS(int[] nums, int length, int[] memory) {
+            if (length == 1 || length == 0) {
+                return memory[length];
+            } else {
+                if (memory[length - 2] == -1) {
+                    memory[length - 2] = robDFS(nums, length - 2, memory);
+                }
+                if (memory[length - 1] == -1) {
+                    memory[length - 1] = robDFS(nums, length - 1, memory);
+                }
+                return Math.max(memory[length - 1], memory[length - 2] + nums[length - 1]);
+            }
+        }
+
+        /**
+         * 给你一个整数 n ，返回 和为 n 的完全平方数的最少数量 。
+         * 完全平方数 是一个整数，其值等于另一个整数的平方；
+         * 换句话说，其值等于一个整数自乘的积。例如，1、4、9 和 16 都是完全平方数，而 3 和 11 不是。
+         * @param n
+         * @return
+         */
+        public int numSquares(int n) {
+            int[] memory = new int[n + 1];
+            return numSquaresDFS(n, memory);
+        }
+
+        private int numSquaresDFS(int n, int[] memory) {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException("Unimplemented method 'numSquaresDFS'");
+        }
+
+    }
 
 }

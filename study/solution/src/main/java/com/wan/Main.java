@@ -106,11 +106,19 @@ public class Main {
         // int k = in.nextInt();
         // Solutions.Solution11 solution11 = solutions.new Solution11();
         // solution11.shortestSubarray(nums, k);
+        // String s = in.next();
+        // String t = in.next();
+        // Solutions.Solution12 solution12 = solutions.new Solution12();
+        // solution12.minWindow(s, t);
 
-        String s = in.next();
-        String t = in.next();
-        Solutions.Solution12 solution12 = solutions.new Solution12();
-        solution12.minWindow(s, t);
+        // 以下部分为动态规划相关
+        Solutions.SolutionDP solutionDP = solutions.new SolutionDP();
+        int n = in.nextInt();
+        int[] nums = new int[n];
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] = in.nextInt();
+        }
+        solutionDP.rob(nums);
 
 
     }
