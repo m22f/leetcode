@@ -98,14 +98,20 @@ public class Main {
         // Solutions.Solution11 solution11 = solutions.new Solution11();
         // solution11.maximumRobots(chargeTimes, runningCosts, budget);
         
-        int n = in.nextInt();
-        int[] nums = new int[n];
-        for (int i = 0; i < nums.length; i++) {
-            nums[i] = in.nextInt();
-        }
-        int k = in.nextInt();
-        Solutions.Solution11 solution11 = solutions.new Solution11();
-        solution11.shortestSubarray(nums, k);
+        // int n = in.nextInt();
+        // int[] nums = new int[n];
+        // for (int i = 0; i < nums.length; i++) {
+        //     nums[i] = in.nextInt();
+        // }
+        // int k = in.nextInt();
+        // Solutions.Solution11 solution11 = solutions.new Solution11();
+        // solution11.shortestSubarray(nums, k);
+
+        String s = in.next();
+        String t = in.next();
+        Solutions.Solution12 solution12 = solutions.new Solution12();
+        solution12.minWindow(s, t);
+
 
     }
 }

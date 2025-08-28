@@ -904,36 +904,68 @@ class Solutions {
      * <= m, n <= 105 s 和 t 由英文字母组成
      */
     class Solution12 {
+        /**
+         * l++的位置出错
+         * 存在不满足的情况，结尾要判断
+         * @param s
+         * @param t
+         * @return
+         */
         public String minWindow(String s, String t) {
             int sL = s.length();
             int tL = t.length();
-            if(sL < tL){
+            if (sL < tL) {
                 return "";
             }
             // 哈希表存t信息
-            HashMap<Character, Integer> map = new HashMap<>();
-            int l = 0;
+            HashMap<Character, Integer> mapT = new HashMap<>();
+            // 哈希表存s窗口信息
+            HashMap<Character, Integer> mapS = new HashMap<>();
+            // 哈希表记录是否满足
+            HashMap<Character, Boolean> map = new HashMap<>();
             int[] ans = new int[2];
-            for(Character c : t.toCharArray()){
-                map.put(c, map.getOrDefault(c, 0) + 1);
+            ans[1] = sL;
+            for (Character c : t.toCharArray()) {
+                mapT.put(c, mapT.getOrDefault(c, 0) + 1);
+                map.put(c, false);
             }
+            int l = 0;
             for (int i = 0; i < sL; i++) {
                 Character c = s.charAt(i);
-                if(map.containsKey(c)){
-                    map.put(c, map.get(c) - 1);
+                if (mapT.containsKey(c)) {
+                    mapS.put(c, mapS.getOrDefault(c, 0) + 1);
+                    if (mapS.get(c) >= mapT.get(c)) {
+                        map.remove(c);
+                    }
                 }
 
-                if(map.isEmpty()){
+                while (l <= i && map.isEmpty()) {
+                    if (i - l < ans[1] - ans[0]) {
+                        ans[0] = l;
+                        ans[1] = i;
+                        
+                    }
+                    if (ans[1] - ans[0] + 1 == tL) {
+                        return s.substring(ans[0], ans[1] + 1);
+                    }
                     
-                    
+                    c = s.charAt(l);
+                    if (mapT.containsKey(c)) {
+                        mapS.put(c, mapS.getOrDefault(c, 0) - 1);
+                        if (mapS.get(c) < mapT.get(c)) {
+                            map.put(c, false);
+                        }
+                    }
                     l++;
-
                 }
-
             }
+            if(ans[1] > sL){
+                return "";
+            }
+            return s.substring(ans[0], ans[1] + 1);
         }
     }
 
-
+    
 
 }
