@@ -55,7 +55,6 @@ public class Main {
         // }
         // Solutions.Solution6 solution6 = solutions.new Solution6();
         // solution6.threeSum(nums);
-
         // int n = in.nextInt();
         // int[] height = new int[n];
         // for (int i = 0; i < height.length; i++) {
@@ -63,16 +62,13 @@ public class Main {
         // }
         // Solutions.Solution7 solution7 = solutions.new Solution7();
         // solution7.trap1(height);
-
         // String s = in.next();
         // Solutions.Solution8 solution8 = solutions.new Solution8();
         // solution8.lengthOfLongestSubstring(s);
-
         // String s = in.next();
         // String p = in.next();
         // Solutions.Solution9 solution9 = solutions.new Solution9();
         // solution9.findAnagrams(s, p);
-
         // int n = in.nextInt();
         // int[] nums = new int[n];
         // for (int i = 0; i < nums.length; i++) {
@@ -81,7 +77,27 @@ public class Main {
         // int k = in.nextInt();
         // Solutions.Solution10 solution10 = solutions.new Solution10();
         // solution10.subarraySum1(nums, k);
-
+        // int n = in.nextInt();
+        // int[] nums = new int[n];
+        // for (int i = 0; i < nums.length; i++) {
+        //     nums[i] = in.nextInt();
+        // }
+        // int k = in.nextInt();
+        // Solutions.Solution11 solution11 = solutions.new Solution11();
+        // solution11.longestSubarray(nums, k);
+        // int n = in.nextInt();
+        // int[] chargeTimes = new int[n];
+        // int[] runningCosts = new int[n];
+        // for (int i = 0; i < chargeTimes.length; i++) {
+        //     chargeTimes[i] = in.nextInt();
+        // }
+        // for (int i = 0; i < runningCosts.length; i++) {
+        //     runningCosts[i] = in.nextInt();
+        // }
+        // long budget = in.nextInt();
+        // Solutions.Solution11 solution11 = solutions.new Solution11();
+        // solution11.maximumRobots(chargeTimes, runningCosts, budget);
+        
         int n = in.nextInt();
         int[] nums = new int[n];
         for (int i = 0; i < nums.length; i++) {
@@ -89,8 +105,7 @@ public class Main {
         }
         int k = in.nextInt();
         Solutions.Solution11 solution11 = solutions.new Solution11();
-        solution11.longestSubarray(nums, k);
-        
+        solution11.shortestSubarray(nums, k);
 
     }
 }

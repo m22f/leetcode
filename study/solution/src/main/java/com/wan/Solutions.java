@@ -749,9 +749,9 @@ class Solutions {
         }
 
         /**
-         * 同题型1438. 绝对差不超过限制的最长连续子数组
-         * 给你一个整数数组 nums ，和一个表示限制的整数 limit，
+         * 同题型1438. 绝对差不超过限制的最长连续子数组 给你一个整数数组 nums ，和一个表示限制的整数 limit，
          * 请你返回最长连续子数组的长度，该子数组中的任意两个元素之间的绝对差必须小于或者等于 limit。
+         * 
          * @param nums
          * @param limit
          * @return
@@ -759,36 +759,145 @@ class Solutions {
         public int longestSubarray(int[] nums, int limit) {
             int ans = 0;
             int l = 0;
-            // 单调队列存当前和最小值
+            // 单调队列存当前最大和最小值
             LinkedList<Integer> down = new LinkedList<>();
             LinkedList<Integer> up = new LinkedList<>();
-            for(int i = 0; i < nums.length; i++){
+            for (int i = 0; i < nums.length; i++) {
                 // 入
-                while(!down.isEmpty() && nums[down.getLast()] < nums[i]){
+                while (!down.isEmpty() && nums[down.getLast()] < nums[i]) {
                     down.removeLast();
-                    l++;
                 }
                 down.add(i);
-                while (!up.isEmpty() && nums[up.getLast()] >= nums[i]) {
+                while (!up.isEmpty() && nums[up.getLast()] > nums[i]) {
                     up.removeLast();
                 }
                 up.add(i);
 
-                // 出
-                if(nums[down.getFirst()] - nums[up.getFirst()] > limit){
-                    if(down.getFirst() < up.getFirst()){
+                // 出 永远使用 while + l++ 的方式来收缩滑动窗口，不要跳跃式更新 l
+                while (nums[down.getFirst()] - nums[up.getFirst()] > limit) {
+                    l++;
+                    if (down.getFirst() < l) {
                         down.removeFirst();
-                        l++;
-                    }else{
+                    }
+                    if (up.getFirst() < l) {
                         up.removeFirst();
                     }
                 }
                 // 记录
-                if(nums[down.getFirst()] - nums[up.getFirst()] <= limit){
+                if (nums[down.getFirst()] - nums[up.getFirst()] <= limit) {
                     ans = Math.max(ans, i - l + 1);
                 }
             }
             return ans;
+        }
+
+        /**
+         * 你有 n 个机器人，给你两个下标从 0 开始的整数数组 chargeTimes 和 runningCosts ，两者长度都为 n 。 第 i 个机器人充电时间为
+         * chargeTimes[i] 单位时间，花费 runningCosts[i] 单位时间运行。再给你一个整数 budget 。 运行 k 个机器人 总开销 是
+         * max(chargeTimes) + k * sum(runningCosts) ， 其中 max(chargeTimes) 是这 k
+         * 个机器人中最大充电时间，sum(runningCosts) 是这 k 个机器人的运行时间之和。 请你返回在 不超过 budget 的前提下，你 最多 可以运行的 连续
+         * 的机器人数目为多少
+         * 
+         * @param chargeTimes
+         * @param runningCosts
+         * @param budget
+         * @return
+         */
+        public int maximumRobots(int[] chargeTimes, int[] runningCosts, long budget) {
+            // 滑动窗口
+            // 一个单调队列记录最大值,一个sum记录总和
+            int n = chargeTimes.length;
+            LinkedList<Integer> max = new LinkedList<>();
+            long sum = 0;
+            int l = 0;
+            int ans = 0;
+            for (int i = 0; i < n; i++) {
+                // 入
+                while (!max.isEmpty() && chargeTimes[max.getLast()] <= chargeTimes[i]) {
+                    max.removeLast();
+                }
+                max.add(i);
+                sum += runningCosts[i];
+
+                // 出
+                while (l <= i && chargeTimes[max.getFirst()] + (i - l + 1) * sum > budget) {
+                    sum -= runningCosts[l];
+                    l++;
+                    if (max.getFirst() < l) {
+                        max.removeFirst();
+                    }
+
+                }
+
+                // 记录
+                if (sum != 0) {
+                    ans = Math.max(ans, i - l + 1);
+                }
+
+            }
+            return ans;
+        }
+
+
+        /**
+         * 862. 和至少为 K 的最短子数组 给你一个整数数组 nums 和一个整数 k ，找出 nums 中和至少为 k 的 最短非空子数组 ， 并返回该子数组的长度。如果不存在这样的
+         * 子数组 ，返回 -1 。 子数组 是数组中 连续 的一部分。 1 <= nums.length <= 105 -105 <= nums[i] <= 105 1 <= k <=
+         * 109
+         * 
+         * @param nums
+         * @param k
+         * @return
+         */
+        public int shortestSubarray(int[] nums, int k) {
+            int n = nums.length;
+            int ans = Integer.MAX_VALUE;
+            // 左边界在循环内置零会导致on2时间复杂度
+            int l = 0;
+            // 前缀和,构造出过错，数据范围越界
+            long[] sums = new long[n + 1];
+            for (int i = 0; i < n; i++) {
+                sums[i + 1] += nums[i] + sums[i];
+            }
+            // 维护最小值的单调队列
+            LinkedList<Integer> min = new LinkedList<>();
+            for (int i = 0; i < n; i++) {
+                // 入
+                while (!min.isEmpty() && sums[min.getLast()] >= sums[i]) {
+                    min.removeLast();
+                }
+                min.add(i);
+                // 出
+                while (l <= i && sums[i + 1] - sums[min.getFirst()] >= k) {
+                    ans = Math.min(ans, i - l + 1);
+                    l++;
+                    if (min.getFirst() < l) {
+                        min.removeFirst();
+                    }
+                }
+            }
+            if (ans == Integer.MAX_VALUE || ans == 0) {
+                ans = -1;
+            }
+            return ans;
+        }
+
+        /**
+         * 1499. 满足不等式的最大值
+         * 给你一个数组 points 和一个整数 k 。数组中每个元素都表示二维平面上的点的坐标，并按照横坐标 x 的值从小到大排序。
+         * 也就是说 points[i] = [xi, yi] ，并且在 1 <= i < j <= points.length 的前提下， xi < xj 总成立。
+         * 请你找出 yi + yj + |xi - xj| 的 最大值，其中 |xi - xj| <= k 且 1 <= i < j <= points.length。
+         * 题目测试数据保证至少存在一对能够满足 |xi - xj| <= k 的点。
+         * 2 <= points.length <= 10^5
+         * points[i].length == 2
+         * -10^8 <= points[i][0], points[i][1] <= 10^8
+         * 0 <= k <= 2 * 10^8
+         * 对于所有的1 <= i < j <= points.length ，points[i][0] < points[j][0] 都成立。也就是说，xi 是严格递增的。
+         * @param points
+         * @param k
+         * @return
+         */
+        public int findMaxValueOfEquation(int[][] points, int k) {
+            return 0;
         }
     }
 
