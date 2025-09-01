@@ -29,6 +29,7 @@ package com.wan.network;
  * 
  * 四次挥手
  * 由于tcp是全双工通信，且两边对资源关闭大概率不同步，所以关闭时，要两边都分别发送fin报文和对fin报文进行确认
+ * fin报文包含fin和ack标志位
  * 多路复用
  * select poll epoll
  * session cocicker

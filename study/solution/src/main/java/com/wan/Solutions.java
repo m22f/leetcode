@@ -1070,17 +1070,30 @@ class Solutions {
          * 给你一个整数 n ，返回 和为 n 的完全平方数的最少数量 。
          * 完全平方数 是一个整数，其值等于另一个整数的平方；
          * 换句话说，其值等于一个整数自乘的积。例如，1、4、9 和 16 都是完全平方数，而 3 和 11 不是。
+         * 1 <= n <= 104
          * @param n
          * @return
          */
         public int numSquares(int n) {
-            int[] memory = new int[n + 1];
-            return numSquaresDFS(n, memory);
+            int sqrt = (int) Math.sqrt(n);
+            int[][] memory = new int[sqrt + 1][n + 1];
+            // 01背包问题，取或者不取
+            return numSquaresDFS(sqrt, n, memory);
         }
 
-        private int numSquaresDFS(int n, int[] memory) {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'numSquaresDFS'");
+        private int numSquaresDFS(int i, int j, int[][] memory) {
+            if(i == 0){
+                return j == 0 ? 0:Integer.MAX_VALUE;
+            }
+            if(memory[i][j] != 0){
+                return memory[i][j];
+            }
+            if(j < i*i){
+                memory[i][j] = numSquaresDFS(i-1, j, memory);
+            } else{
+                memory[i][j] = Math.min(numSquaresDFS(i, j - i*i, memory) + 1, numSquaresDFS(i - 1, j, memory));
+            }
+            return memory[i][j];
         }
 
     }

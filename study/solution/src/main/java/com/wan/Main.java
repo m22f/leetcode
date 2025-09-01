@@ -114,11 +114,12 @@ public class Main {
         // 以下部分为动态规划相关
         Solutions.SolutionDP solutionDP = solutions.new SolutionDP();
         int n = in.nextInt();
-        int[] nums = new int[n];
-        for (int i = 0; i < nums.length; i++) {
-            nums[i] = in.nextInt();
-        }
-        solutionDP.rob(nums);
+        // int[] nums = new int[n];
+        // for (int i = 0; i < nums.length; i++) {
+        //     nums[i] = in.nextInt();
+        // }
+        // solutionDP.rob(nums);
+        solutionDP.numSquares(n);
 
 
     }
