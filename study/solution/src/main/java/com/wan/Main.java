@@ -111,15 +111,24 @@ public class Main {
         // Solutions.Solution12 solution12 = solutions.new Solution12();
         // solution12.minWindow(s, t);
 
-        // 以下部分为动态规划相关
-        Solutions.SolutionDP solutionDP = solutions.new SolutionDP();
+        // // 以下部分为动态规划相关
+        // Solutions.SolutionDP solutionDP = solutions.new SolutionDP();
+        // int n = in.nextInt();
+        // // int[] nums = new int[n];
+        // // for (int i = 0; i < nums.length; i++) {
+        // //     nums[i] = in.nextInt();
+        // // }
+        // // solutionDP.rob(nums);
+        // solutionDP.numSquares(n);
+
+        Solutions.Solution solution = solutions.new Solution();
         int n = in.nextInt();
-        // int[] nums = new int[n];
-        // for (int i = 0; i < nums.length; i++) {
-        //     nums[i] = in.nextInt();
-        // }
-        // solutionDP.rob(nums);
-        solutionDP.numSquares(n);
+        int[] nums = new int[n];
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] = in.nextInt();
+        }
+        int target = in.nextInt();
+        solution.coinChange(nums, target);
 
 
     }
